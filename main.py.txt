@@ -1,0 +1,49 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+from flask import Flask, request, redirect
+import requests
+
+app = Flask(__name__)
+
+CLIENT_ID = "169738"
+CLIENT_SECRET = os.getenv("STRAVA_SECRET")
+REDIRECT_URI = "https://fitbet-strava-auth-1.onrender.com/callback"
+
+@app.route('/')
+def home():
+    auth_url = (
+        f"https://www.strava.com/oauth/authorize?"
+        f"client_id={CLIENT_ID}&response_type=code&"
+        f"redirect_uri={REDIRECT_URI}&scope=activity:read_all&"
+        f"approval_prompt=force"
+    )
+    return f'''
+        <h2>Welcome to FitBet!</h2>
+        <a href="{auth_url}"><button>Connect with Strava</button></a>
+    '''
+
+@app.route('/callback')
+def callback():
+    code = request.args.get('code')
+    if not code:
+        return "No code returned from Strava."
+
+    token_response = requests.post("https://www.strava.com/oauth/token", data={
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET,
+        'code': code,
+        'grant_type': 'authorization_code'
+    }).json()
+
+    athlete = token_response.get("athlete", {})
+    return f'''
+        <h2>Thanks for connecting, {athlete.get("firstname", "athlete")}!</h2>
+        <p>Access Token: {token_response["access_token"]}</p>
+        <p>Refresh Token: {token_response["refresh_token"]}</p>
+        <p>You can now close this tab.</p>
+    '''
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=10000)
