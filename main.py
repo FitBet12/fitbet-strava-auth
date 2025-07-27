@@ -1,15 +1,21 @@
+from flask import Flask, request
+import requests
 import os
+import gspread
+from google.oauth2.service_account import Credentials
 from dotenv import load_dotenv
 load_dotenv()
-
-from flask import Flask, request, redirect
-import requests
 
 app = Flask(__name__)
 
 CLIENT_ID = "169738"
 CLIENT_SECRET = os.getenv("STRAVA_SECRET")
 REDIRECT_URI = "https://fitbet-strava-auth-1.onrender.com/callback"
+
+# Google Sheets setup
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+SHEET_NAME = "FitBet Strava Users"  # Must match your Google Sheet name
+SHEET_ID = "1VX_9eS3zJM9QbReVbU49yDlgldSDwAI45DuVV6PASNA"  # The part after /d/ in your sheet URL
 
 @app.route('/')
 def home():
@@ -37,12 +43,23 @@ def callback():
         'grant_type': 'authorization_code'
     }).json()
 
+  access_token = token_response["access_token"]
+    refresh_token = token_response["refresh_token"]
     athlete = token_response.get("athlete", {})
-    return f'''
-        <h2>Thanks for connecting, {athlete.get("firstname", "athlete")}!</h2>
-        <p>Access Token: {token_response["access_token"]}</p>
-        <p>Refresh Token: {token_response["refresh_token"]}</p>
-        <p>You can now close this tab.</p>
+    name = athlete.get("firstname", "unknown")
+    strava_id = athlete.get("id", "unknown")
+
+    # Connect to Google Sheet
+    credentials = Credentials.from_service_account_file("google-sheets-key.json", scopes=SCOPES)
+    client = gspread.authorize(credentials)
+    sheet = client.open_by_key(SHEET_ID).sheet1
+
+    # Append the user data
+    sheet.append_row([name, strava_id, access_token, refresh_token])
+
+      return f'''
+        <h2>Thanks for connecting, {name}!</h2>
+        <p>You can now compete in FitBet Challenges!</p>
     '''
 
 if __name__ == '__main__':
