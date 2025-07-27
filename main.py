@@ -2,6 +2,7 @@ from flask import Flask, request
 import requests
 import os
 import gspread
+import json
 from google.oauth2.service_account import Credentials
 from dotenv import load_dotenv
 load_dotenv()
@@ -50,7 +51,9 @@ def callback():
     strava_id = athlete.get("id", "unknown")
 
     # Connect to Google Sheet
-    credentials = Credentials.from_service_account_file("google-sheets-key.json", scopes=SCOPES)
+    key_json = os.getenv("GOOGLE_SHEETS_CREDS_JSON")
+info = json.loads(key_json)
+credentials = Credentials.from_service_account_info(info, scopes=SCOPES)
     client = gspread.authorize(credentials)
     sheet = client.open_by_key(SHEET_ID).sheet1
 
