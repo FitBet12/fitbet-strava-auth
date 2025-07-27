@@ -37,6 +37,7 @@ def callback():
     if not code:
         return "No code returned from Strava."
 
+    # Get tokens from Strava
     token_response = requests.post("https://www.strava.com/oauth/token", data={
         'client_id': CLIENT_ID,
         'client_secret': CLIENT_SECRET,
@@ -50,17 +51,19 @@ def callback():
     name = athlete.get("firstname", "unknown")
     strava_id = athlete.get("id", "unknown")
 
-    # Connect to Google Sheet
+    # Load Google Sheets credentials from environment
     key_json = os.getenv("GOOGLE_SHEETS_CREDS_JSON")
-info = json.loads(key_json)
-credentials = Credentials.from_service_account_info(info, scopes=SCOPES)
+    info = json.loads(key_json)
+    credentials = Credentials.from_service_account_info(info, scopes=SCOPES)
+
+    # Connect to Google Sheets
     client = gspread.authorize(credentials)
     sheet = client.open_by_key(SHEET_ID).sheet1
 
-    # Append the user data
+    # Save to spreadsheet
     sheet.append_row([name, strava_id, access_token, refresh_token])
 
-      return f'''
+    return f'''
         <h2>Thanks for connecting, {name}!</h2>
         <p>You can now compete in FitBet Challenges!</p>
     '''
