@@ -44,7 +44,7 @@ def callback():
         'grant_type': 'authorization_code'
     }).json()
 
-  access_token = token_response["access_token"]
+    access_token = token_response["access_token"]
     refresh_token = token_response["refresh_token"]
     athlete = token_response.get("athlete", {})
     name = athlete.get("firstname", "unknown")
