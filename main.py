@@ -52,7 +52,7 @@ def callback():
     strava_id = athlete.get("id", "unknown")
 
     # Load Google Sheets credentials from environment
-    key_json = os.getenv("GOOGLE_SHEETS_JSON_SAFE")
+    key_json = os.getenv("GOOGLE_SHEETS_CREDS_JSON")
     info = json.loads(key_json)
     credentials = Credentials.from_service_account_info(info, scopes=SCOPES)
 
