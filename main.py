@@ -16,7 +16,7 @@ REDIRECT_URI = "https://fitbet-strava-auth-1.onrender.com/callback"
 # Google Sheets setup
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SHEET_NAME = "FitBet Strava Users"  # Must match your Google Sheet name
-SHEET_ID = "1VX_9eS3zJM9QbReVbU49yDlgldSDwAI45DuVV6PASNA"  # The part after /d/ in your sheet URL
+SHEET_ID = os.getenv("1VX_9eS3zJM9QbReVbU49yDlgldSDwAI45DuVV6PASNA")  # The part after /d/ in your sheet URL
 
 @app.route('/')
 def home():
