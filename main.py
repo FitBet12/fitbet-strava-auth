@@ -18,7 +18,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SHEET_NAME = "FitBet Strava Users"  # Must match your Google Sheet name
 SHEET_ID = os.getenv("SHEET_ID")  # The part after /d/ in your sheet URL
 
-@@app.route('/')
+@app.route('/')
 def home():
     auth_url = (
         f"https://www.strava.com/oauth/authorize?"
