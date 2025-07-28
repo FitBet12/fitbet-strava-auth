@@ -30,18 +30,17 @@ def home():
         <h2>Welcome to FitBet!</h2>
 
         <a href="{auth_url}">
-            <img src="https://storage.googleapis.com/assets.strava.com/connect-with-strava/connect-with-strava@2x.png" 
+            <img src="https://github.com/strava/developer-website/blob/main/assets/img/connect_with_strava.png?raw=true" 
                  alt="Connect with Strava" 
                  style="height: 48px;" />
         </a>
 
         <br><br>
 
-        <img src="https://storage.googleapis.com/assets.strava.com/logo-packs/powered-by-strava-black.png" 
+        <img src="https://github.com/strava/developer-website/blob/main/assets/img/powered_by_strava_black.png?raw=true" 
              alt="Powered by Strava" 
              style="height: 32px;" />
     '''
-
 @app.route('/callback')
 def callback():
     code = request.args.get('code')
