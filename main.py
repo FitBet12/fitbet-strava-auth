@@ -53,7 +53,7 @@ def callback():
     access_token = token_response["access_token"]
     refresh_token = token_response["refresh_token"]
     athlete = token_response.get("athlete", {})
-    nfirstname = athlete.get("firstname", "")
+    firstname = athlete.get("firstname", "")
     lastname = athlete.get("lastname", "")
     name = f"{firstname} {lastname}".strip() or "unknown"
     strava_id = athlete.get("id", "unknown")
