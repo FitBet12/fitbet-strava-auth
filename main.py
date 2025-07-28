@@ -28,8 +28,20 @@ def home():
     )
     return f'''
         <h2>Welcome to FitBet!</h2>
-        <a href="{auth_url}"><button>Connect with Strava</button></a>
+
+        <a href="{auth_url}">
+            <img src="https://developers.strava.com/assets/img/connect_with_strava.png" 
+                 alt="Connect with Strava" 
+                 style="height: 48px;" />
+        </a>
+
+        <br><br>
+
+        <img src="https://developers.strava.com/assets/img/powered_by_strava_black.png" 
+             alt="Powered by Strava" 
+             style="height: 32px;" />
     '''
+
 
 @app.route('/callback')
 def callback():
