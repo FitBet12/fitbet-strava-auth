@@ -24,7 +24,7 @@ BUBBLE_STRAVA_UPSERT_URL = os.getenv("BUBBLE_STRAVA_UPSERT_URL")
 @app.route('/')
 def home():
     return """
-        <h2>FitBet Strava Auth</h2>
+        <h2>FitStreak Strava Auth</h2>
         <p>Use /connect?platform=iphone</p>
         <p>Or /connect?platform=android&uid=YOUR_BUBBLE_USER_ID</p>
     """
@@ -120,7 +120,7 @@ def callback():
 
         return f"""
             <h2>Thanks for connecting, {name}!</h2>
-            <p>Your Strava account has been linked to FitBet.</p>
+            <p>Your Strava account has been linked to FitStreak.</p>
             <p>You can now return to the app.</p>
         """
 
@@ -138,7 +138,7 @@ def callback():
 
         return f"""
             <h2>Thanks for connecting, {name}!</h2>
-            <p>You can now compete in FitBet challenges.</p>
+            <p>You can now compete in FitStreak challenges.</p>
         """
 
     else:
